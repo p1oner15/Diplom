@@ -2,6 +2,8 @@ package com.example.diplom.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "Clients")
 @Data
+@Getter
+@Setter
 public class Client {
 
     @Id

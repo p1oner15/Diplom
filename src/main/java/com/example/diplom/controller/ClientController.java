@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
@@ -24,7 +25,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
-        return ResponseEntity.of(client);
+        return ResponseEntity.of(Optional.of(client));
     }
 
 
@@ -37,7 +38,7 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client updatedClient) {
         Client client = clientService.updateClient(id, updatedClient);
-        return ResponseEntity.of(client);
+        return ResponseEntity.of(Optional.of(client));
     }
 
     @DeleteMapping("/{id}")
