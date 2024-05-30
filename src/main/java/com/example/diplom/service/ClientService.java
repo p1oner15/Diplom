@@ -1,16 +1,27 @@
 package com.example.diplom.service;
+
 import com.example.diplom.domain.Client;
+import com.example.diplom.domain.RegisterDto;
 import com.example.diplom.repository.ClientRepository;
+import com.example.diplom.utils.PasswordUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Getter
+@Setter
 public class ClientService {
 
+    private final ClientRepository clientRepository;
+
     @Autowired
-    private ClientRepository clientRepository;
+    public ClientService(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     public List<Client> getAllClients() {
         return clientRepository.findAll();
@@ -21,6 +32,7 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
+        // Сохраняем пароль в открытом виде
         return clientRepository.save(client);
     }
 
@@ -34,5 +46,43 @@ public class ClientService {
 
     public void deleteClient(Long id) {
         clientRepository.deleteById(id);
+    }
+
+    public Client authenticateClient(String email, String password) {
+        Client client = clientRepository.findByEmail(email);
+        if (client != null && PasswordUtil.verifyPassword(password, client.getPassword())) {
+            return client;
+        }
+        return null;
+    }
+
+    public boolean checkEmailExists(String email) {
+        return clientRepository.existsByEmail(email);
+    }
+
+    public boolean checkPasswordMatches(String email, String password) {
+        // Ищем пользователя по email и паролю
+        return clientRepository.existsByEmailAndPassword(email, password);
+    }
+
+    public Client registerClient(RegisterDto client) {
+        if (!clientRepository.existsByEmail(client.getEmail())) {
+            String hashedPassword = PasswordUtil.hashPassword(client.getPassword());
+            client.setPassword(hashedPassword);
+            Client newClient = Client.builder()
+                    .firstName(client.getFirstName())
+                    .lastName(client.getLastName())
+                    .email(client.getEmail())
+                    .password(hashedPassword)
+                    .passport(client.getPassport())
+                    .citizenship(client.getCitizenship())
+                    .dateOfBirth(client.getDateOfBirth())
+                    .phoneNumber(client.getPhoneNumber())
+                    .build();
+            return clientRepository.save(newClient);
+        } else {
+            // Если пользователь с таким email уже существует
+            throw new RuntimeException("User with this email already exists");
+        }
     }
 }

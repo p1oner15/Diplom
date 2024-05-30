@@ -1,24 +1,15 @@
 package com.example.diplom.domain;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "clients")
 @Data
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Client {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long clientId;
-
+public class RegisterDto {
     private String firstName;
     private String lastName;
     private String email;
@@ -27,5 +18,5 @@ public class Client {
     private String citizenship;
     private Date dateOfBirth;
     private String phoneNumber;
-    // Другие поля класса
+
 }

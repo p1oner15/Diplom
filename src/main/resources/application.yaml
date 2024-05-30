@@ -1,8 +1,15 @@
 spring:
   application:
     name: diplom
+    port: 8080
+    ssl:
+      key-store: classpath:keystore.p12
+      key-store-password: yourpassword
+      key-store-type: PKCS12
+      key-alias: myalias
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgresql
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgre
     password: 1234
     driver-class-name: org.postgresql.Driver
@@ -13,3 +20,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: i8LGobQXLmM23CI02IXuxkz5ZD0tKHoUhqlQjnuXmr0=
+  expirationMs: 3600000

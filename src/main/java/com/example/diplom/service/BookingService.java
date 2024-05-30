@@ -36,4 +36,9 @@ public class BookingService {
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
     }
+
+    // Метод для сохранения бронирования
+    public Booking saveBooking(Booking booking) {
+        return bookingRepository.save(booking);
+    }
 }
